@@ -1,16 +1,13 @@
-import java.util.Arrays;
+import java.util.*;
 
 class Solution {
     public int singleNumber(int[] nums) {
-        Arrays.sort(nums);
+        int result = 0;
 
-        for (int i = 0; i < nums.length - 1; i+=2) {
-            if (nums[i] != nums[i + 1]) {
-                return nums[i];
-            }
+        for (int i=0;i<nums.length;i++) {
+            result ^= nums[i]; // XOR cancels out duplicates
         }
 
-        //if nothing found,last one is the one\U0001f602
-        return nums[nums.length - 1];
+        return result;
     }
 }
