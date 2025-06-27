@@ -1,37 +1,36 @@
 class Solution {
     public int[] searchRange(int[] nums, int target) {
-        // Handle empty case
-        if (nums.length == 0) return new int[]{-1, -1};
+        int[] result = {-1, -1};
+        int left = binarySearch(nums, target, true);
+        int right = binarySearch(nums, target, false);
+        result[0] = left;
+        result[1] = right;
+        return result;        
+    }
 
-        int left = 0, right = nums.length - 1;
-        List<Integer> result = new ArrayList<>();
+    private int binarySearch(int[] nums, int target, boolean isSearchingLeft) {
+        int left = 0;
+        int right = nums.length - 1;
+        int idx = -1;
 
         while (left <= right) {
-            int mid = (left + right) / 2;
+            int mid = left + (right - left) / 2;
             
-            if (nums[mid] == target) {
-                // Expand to both sides
-                int i = mid;
-                while (i >= 0 && nums[i] == target) {
-                    i--;
-                }
-                i++; // Move to first valid
-                while (i < nums.length && nums[i] == target) {
-                    result.add(i);
-                    i++;
-                }
-                break;
+            if (nums[mid] > target) {
+                right = mid - 1;
             } else if (nums[mid] < target) {
                 left = mid + 1;
             } else {
-                right = mid - 1;
+                idx = mid;
+                if (isSearchingLeft) {
+                    right = mid - 1;
+                } else {
+                    left = mid + 1;
+                }
             }
         }
 
-        if (result.isEmpty()) {
-            return new int[]{-1, -1};
-        } else {
-            return new int[]{result.get(0), result.get(result.size() - 1)};
-        }
+        return idx;
     }
+
 }
